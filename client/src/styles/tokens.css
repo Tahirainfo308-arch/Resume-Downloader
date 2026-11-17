@@ -1,0 +1,15 @@
+:root {
+  --color-burgundy: #800020;
+  --color-beige: #f3e6d5;
+  --color-cream: #fff9f2;
+  --color-rose: #d45060;
+  --color-dark: #302126;
+
+  --color-surface: var(--color-cream);
+  --color-foreground: var(--color-dark);
+  --color-muted: rgba(48, 33, 38, 0.68);
+  --color-border: var(--color-beige);
+  --color-accent: var(--color-rose);
+
+  color-scheme: light;
+}

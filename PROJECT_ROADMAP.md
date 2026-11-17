@@ -58,17 +58,17 @@ Express API (apps/api, /api/v1)
 
 ### 1.2 Runtime Components
 
-| Component | Responsibility | Notes |
-|---|---|---|
-| React SPA | All UI rendering and user interaction | No secrets, no direct database or paid-provider calls |
-| Express API | REST API, auth, business rules, integrations | Single source of truth for data and authorization |
-| MongoDB | Primary persistent datastore | Mongoose models, indexes, validation, schema versioning |
-| Object storage | Binary files | Local adapter for development, S3-compatible adapter for production |
-| AI provider | Generation, analysis, matching, advice, interview feedback | Provider abstraction with deterministic test adapter only in tests |
-| Payment provider | Checkout, billing portal, subscriptions, webhooks | Webhook is authoritative for subscription state |
-| Email provider | Account verification and reset emails | Abstracted so no credential is tied to app logic |
-| Background worker | Long-running AI, parsing, PDF, email, and cleanup jobs | Start in-process, extract to a queue/worker when volume requires it |
-| Observability layer | Logs, metrics, health checks, request tracing | Required before production launch |
+| Component           | Responsibility                                             | Notes                                                               |
+| ------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------- |
+| React SPA           | All UI rendering and user interaction                      | No secrets, no direct database or paid-provider calls               |
+| Express API         | REST API, auth, business rules, integrations               | Single source of truth for data and authorization                   |
+| MongoDB             | Primary persistent datastore                               | Mongoose models, indexes, validation, schema versioning             |
+| Object storage      | Binary files                                               | Local adapter for development, S3-compatible adapter for production |
+| AI provider         | Generation, analysis, matching, advice, interview feedback | Provider abstraction with deterministic test adapter only in tests  |
+| Payment provider    | Checkout, billing portal, subscriptions, webhooks          | Webhook is authoritative for subscription state                     |
+| Email provider      | Account verification and reset emails                      | Abstracted so no credential is tied to app logic                    |
+| Background worker   | Long-running AI, parsing, PDF, email, and cleanup jobs     | Start in-process, extract to a queue/worker when volume requires it |
+| Observability layer | Logs, metrics, health checks, request tracing              | Required before production launch                                   |
 
 ### 1.3 Request Flow
 
@@ -89,18 +89,18 @@ Express API (apps/api, /api/v1)
 
 ### 1.5 Cross-Cutting Concerns
 
-| Concern | Approach |
-|---|---|
-| API versioning | All endpoints under `/api/v1` |
-| Errors | Consistent `{ success: false, error: { code, message, details, requestId } }` |
-| Success | Consistent `{ success: true, data, meta }` |
-| Pagination | `page`, `limit`, `sort`, `search`, cursor support where useful |
-| Idempotency | Required for payment/checkout operations and webhook processing |
-| Rate limits | Strict limits on auth, AI, PDF, parsing, and password reset endpoints |
-| File handling | Size limits, MIME and magic-byte checks, private storage keys, short-lived signed URLs |
-| Auditing | Admin actions, role changes, billing changes, subscription changes, destructive operations |
-| Data retention | Configurable retention for AI logs and generated artifacts; user deletion workflow |
-| Health checks | `/health/live`, `/health/ready` with database and integration readiness checks |
+| Concern        | Approach                                                                                   |
+| -------------- | ------------------------------------------------------------------------------------------ |
+| API versioning | All endpoints under `/api/v1`                                                              |
+| Errors         | Consistent `{ success: false, error: { code, message, details, requestId } }`              |
+| Success        | Consistent `{ success: true, data, meta }`                                                 |
+| Pagination     | `page`, `limit`, `sort`, `search`, cursor support where useful                             |
+| Idempotency    | Required for payment/checkout operations and webhook processing                            |
+| Rate limits    | Strict limits on auth, AI, PDF, parsing, and password reset endpoints                      |
+| File handling  | Size limits, MIME and magic-byte checks, private storage keys, short-lived signed URLs     |
+| Auditing       | Admin actions, role changes, billing changes, subscription changes, destructive operations |
+| Data retention | Configurable retention for AI logs and generated artifacts; user deletion workflow         |
+| Health checks  | `/health/live`, `/health/ready` with database and integration readiness checks             |
 
 ---
 
@@ -133,24 +133,24 @@ App
 
 ### 2.3 Route Map
 
-| Route group | Routes | Access |
-|---|---|---|
-| Public | `/`, `/features`, `/templates`, `/pricing`, `/about`, `/contact` | Everyone |
-| Auth | `/login`, `/register`, `/forgot-password`, `/reset-password`, `/verify-email` | Guests; some token-bound |
-| Onboarding | `/onboarding/profile`, `/onboarding/goals`, `/onboarding/complete` | Authenticated, incomplete onboarding |
-| Dashboard | `/app` | Authenticated |
-| Resumes | `/app/resumes`, `/app/resumes/new`, `/app/resumes/:id/edit`, `/app/resumes/:id/analyze` | Authenticated owner |
-| Templates | `/app/templates`, `/app/templates/:id/preview` | Authenticated; premium gated where applicable |
-| Job matcher | `/app/jobs`, `/app/jobs/:id`, `/app/matcher` | Authenticated owner |
-| Portfolio | `/app/portfolio`, `/app/portfolio/projects`, `/app/portfolio/settings` | Authenticated owner |
-| Career advisor | `/app/advisor`, `/app/advisor/:conversationId` | Authenticated |
-| Interviews | `/app/interviews`, `/app/interviews/:sessionId` | Authenticated owner |
-| Documents | `/app/documents`, `/app/documents/:id` | Authenticated owner |
-| Billing | `/app/billing`, `/app/billing/checkout`, `/app/billing/history` | Authenticated |
-| Settings | `/app/settings/profile`, `/app/settings/security`, `/app/settings/notifications`, `/app/settings/privacy` | Authenticated |
-| Notifications | `/app/notifications` | Authenticated |
-| Public portfolio | `/p/:slug` | Public if portfolio visibility allows |
-| Admin | `/admin`, `/admin/users`, `/admin/resumes`, `/admin/templates`, `/admin/subscriptions`, `/admin/ai-usage`, `/admin/audit-logs`, `/admin/webhooks` | `admin` role |
+| Route group      | Routes                                                                                                                                            | Access                                        |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Public           | `/`, `/features`, `/templates`, `/pricing`, `/about`, `/contact`                                                                                  | Everyone                                      |
+| Auth             | `/login`, `/register`, `/forgot-password`, `/reset-password`, `/verify-email`                                                                     | Guests; some token-bound                      |
+| Onboarding       | `/onboarding/profile`, `/onboarding/goals`, `/onboarding/complete`                                                                                | Authenticated, incomplete onboarding          |
+| Dashboard        | `/app`                                                                                                                                            | Authenticated                                 |
+| Resumes          | `/app/resumes`, `/app/resumes/new`, `/app/resumes/:id/edit`, `/app/resumes/:id/analyze`                                                           | Authenticated owner                           |
+| Templates        | `/app/templates`, `/app/templates/:id/preview`                                                                                                    | Authenticated; premium gated where applicable |
+| Job matcher      | `/app/jobs`, `/app/jobs/:id`, `/app/matcher`                                                                                                      | Authenticated owner                           |
+| Portfolio        | `/app/portfolio`, `/app/portfolio/projects`, `/app/portfolio/settings`                                                                            | Authenticated owner                           |
+| Career advisor   | `/app/advisor`, `/app/advisor/:conversationId`                                                                                                    | Authenticated                                 |
+| Interviews       | `/app/interviews`, `/app/interviews/:sessionId`                                                                                                   | Authenticated owner                           |
+| Documents        | `/app/documents`, `/app/documents/:id`                                                                                                            | Authenticated owner                           |
+| Billing          | `/app/billing`, `/app/billing/checkout`, `/app/billing/history`                                                                                   | Authenticated                                 |
+| Settings         | `/app/settings/profile`, `/app/settings/security`, `/app/settings/notifications`, `/app/settings/privacy`                                         | Authenticated                                 |
+| Notifications    | `/app/notifications`                                                                                                                              | Authenticated                                 |
+| Public portfolio | `/p/:slug`                                                                                                                                        | Public if portfolio visibility allows         |
+| Admin            | `/admin`, `/admin/users`, `/admin/resumes`, `/admin/templates`, `/admin/subscriptions`, `/admin/ai-usage`, `/admin/audit-logs`, `/admin/webhooks` | `admin` role                                  |
 
 ### 2.4 Feature Module Pattern
 
@@ -170,26 +170,26 @@ Examples: `features/resume-builder`, `features/resume-analyzer`, `features/job-m
 
 ### 2.5 State Management
 
-| State | Location | Rationale |
-|---|---|---|
-| Auth user, token status, onboarding stage | Zustand auth store | Needed globally across route guards and layout |
-| UI-only state: sidebar, modals, wizard step, editor selection | Feature Zustand stores or local state | Ephemeral and browser-local |
-| Server data | Feature hooks + API client | Source of truth remains backend |
-| Form state | React Hook Form | Efficient validation and field-level errors |
-| Toast/notification feedback | Toast store | Cross-page user feedback |
-| Editor autosave state | Debounced custom hook with pending/saving/saved/error states | Must communicate reliability to user |
+| State                                                         | Location                                                     | Rationale                                      |
+| ------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------- |
+| Auth user, token status, onboarding stage                     | Zustand auth store                                           | Needed globally across route guards and layout |
+| UI-only state: sidebar, modals, wizard step, editor selection | Feature Zustand stores or local state                        | Ephemeral and browser-local                    |
+| Server data                                                   | Feature hooks + API client                                   | Source of truth remains backend                |
+| Form state                                                    | React Hook Form                                              | Efficient validation and field-level errors    |
+| Toast/notification feedback                                   | Toast store                                                  | Cross-page user feedback                       |
+| Editor autosave state                                         | Debounced custom hook with pending/saving/saved/error states | Must communicate reliability to user           |
 
 ### 2.6 Design System
 
 Tailwind theme tokens must use the exact brand palette:
 
-| Token | Hex | Usage |
-|---|---|---|
+| Token            | Hex       | Usage                                                           |
+| ---------------- | --------- | --------------------------------------------------------------- |
 | `brand.burgundy` | `#800020` | Primary buttons, active navigation, key headings, focus accents |
-| `brand.beige` | `#F3E6D5` | Warm section backgrounds, cards, subtle dividers |
-| `brand.cream` | `#FFF9F2` | Main application and marketing background |
-| `brand.rose` | `#D45060` | Accents, highlights, badges, critical emphasis |
-| `brand.ink` | `#302126` | Primary text and dark surfaces |
+| `brand.beige`    | `#F3E6D5` | Warm section backgrounds, cards, subtle dividers                |
+| `brand.cream`    | `#FFF9F2` | Main application and marketing background                       |
+| `brand.rose`     | `#D45060` | Accents, highlights, badges, critical emphasis                  |
+| `brand.ink`      | `#302126` | Primary text and dark surfaces                                  |
 
 Rules:
 
@@ -229,36 +229,36 @@ Route -> Middleware -> Controller -> Service -> Repository -> Mongoose Model
                              +--> Integration Adapter (AI, storage, payment, email)
 ```
 
-| Layer | Responsibility |
-|---|---|
-| Routes | Map URLs to controllers; apply auth, roles, validation, rate limits |
-| Middleware | Request ID, logging, cookie parsing, auth, RBAC, Zod validation, upload handling, error normalization |
-| Controllers | Parse request, call service, shape HTTP response; no business logic |
-| Services | Business rules, quotas, ownership, orchestration, transaction-like workflows |
-| Repositories | Mongoose queries, projections, pagination, index-aware access |
-| Models | Collection shape, schema validation, indexes, hooks, plugins |
-| Integrations | Provider-specific adapters behind stable interfaces |
-| Jobs | Async tasks for parsing, PDF generation, AI workflows, email, cleanup |
-| Validators | Shared Zod schemas and backend-specific refinements |
+| Layer        | Responsibility                                                                                        |
+| ------------ | ----------------------------------------------------------------------------------------------------- |
+| Routes       | Map URLs to controllers; apply auth, roles, validation, rate limits                                   |
+| Middleware   | Request ID, logging, cookie parsing, auth, RBAC, Zod validation, upload handling, error normalization |
+| Controllers  | Parse request, call service, shape HTTP response; no business logic                                   |
+| Services     | Business rules, quotas, ownership, orchestration, transaction-like workflows                          |
+| Repositories | Mongoose queries, projections, pagination, index-aware access                                         |
+| Models       | Collection shape, schema validation, indexes, hooks, plugins                                          |
+| Integrations | Provider-specific adapters behind stable interfaces                                                   |
+| Jobs         | Async tasks for parsing, PDF generation, AI workflows, email, cleanup                                 |
+| Validators   | Shared Zod schemas and backend-specific refinements                                                   |
 
 ### 3.2 Backend Modules
 
-| Module | Service responsibility |
-|---|---|
-| Auth service | Registration, verification, login, refresh rotation, logout, password reset |
-| User service | Profile/settings, onboarding, account deletion, privacy controls |
-| Resume service | CRUD, versioning, section editing, duplication, export orchestration |
-| Template service | Template catalog, preview metadata, admin template management |
-| AI service | Provider selection, prompt execution, structured output validation, usage metering |
-| Analysis service | ATS scoring, content checks, keyword analysis, recommendations |
-| Job match service | Job description storage, match execution, result comparison |
-| Portfolio service | Portfolio CRUD, publishing, slug generation, project management |
-| Interview service | Session creation, question generation, answer evaluation |
-| Document service | Upload metadata, parsing orchestration, signed download URLs |
-| Billing service | Plans, checkout, portal, subscription state, entitlements, webhook handling |
-| Notification service | In-app notifications and email triggers |
-| Admin service | Aggregations, moderation, audit logs, support views |
-| Audit service | Immutable action records for sensitive operations |
+| Module               | Service responsibility                                                             |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| Auth service         | Registration, verification, login, refresh rotation, logout, password reset        |
+| User service         | Profile/settings, onboarding, account deletion, privacy controls                   |
+| Resume service       | CRUD, versioning, section editing, duplication, export orchestration               |
+| Template service     | Template catalog, preview metadata, admin template management                      |
+| AI service           | Provider selection, prompt execution, structured output validation, usage metering |
+| Analysis service     | ATS scoring, content checks, keyword analysis, recommendations                     |
+| Job match service    | Job description storage, match execution, result comparison                        |
+| Portfolio service    | Portfolio CRUD, publishing, slug generation, project management                    |
+| Interview service    | Session creation, question generation, answer evaluation                           |
+| Document service     | Upload metadata, parsing orchestration, signed download URLs                       |
+| Billing service      | Plans, checkout, portal, subscription state, entitlements, webhook handling        |
+| Notification service | In-app notifications and email triggers                                            |
+| Admin service        | Aggregations, moderation, audit logs, support views                                |
+| Audit service        | Immutable action records for sensitive operations                                  |
 
 ### 3.3 Middleware Order
 
@@ -285,19 +285,19 @@ Route -> Middleware -> Controller -> Service -> Repository -> Mongoose Model
 
 ### 3.5 Error Handling
 
-| Scenario | HTTP status | Error code example |
-|---|---|---|
-| Invalid request | 400 | `VALIDATION_ERROR` |
-| Bad credentials | 401 | `INVALID_CREDENTIALS` |
-| Expired/invalid token | 401 | `SESSION_EXPIRED` |
-| Forbidden resource | 403 | `FORBIDDEN` |
-| Not found | 404 | `NOT_FOUND` |
-| Conflict/duplicate | 409 | `CONFLICT` |
-| Payload too large | 413 | `PAYLOAD_TOO_LARGE` |
-| Rate limited | 429 | `RATE_LIMITED` |
-| Quota exhausted | 402 or 429 by policy | `QUOTA_EXCEEDED` |
-| Provider failure | 502 | `AI_PROVIDER_UNAVAILABLE`, `PAYMENT_PROVIDER_UNAVAILABLE` |
-| Unexpected failure | 500 | `INTERNAL_ERROR` |
+| Scenario              | HTTP status          | Error code example                                        |
+| --------------------- | -------------------- | --------------------------------------------------------- |
+| Invalid request       | 400                  | `VALIDATION_ERROR`                                        |
+| Bad credentials       | 401                  | `INVALID_CREDENTIALS`                                     |
+| Expired/invalid token | 401                  | `SESSION_EXPIRED`                                         |
+| Forbidden resource    | 403                  | `FORBIDDEN`                                               |
+| Not found             | 404                  | `NOT_FOUND`                                               |
+| Conflict/duplicate    | 409                  | `CONFLICT`                                                |
+| Payload too large     | 413                  | `PAYLOAD_TOO_LARGE`                                       |
+| Rate limited          | 429                  | `RATE_LIMITED`                                            |
+| Quota exhausted       | 402 or 429 by policy | `QUOTA_EXCEEDED`                                          |
+| Provider failure      | 502                  | `AI_PROVIDER_UNAVAILABLE`, `PAYMENT_PROVIDER_UNAVAILABLE` |
+| Unexpected failure    | 500                  | `INTERNAL_ERROR`                                          |
 
 Errors include a request ID and never expose stack traces, secrets, or raw provider responses in production.
 
@@ -320,293 +320,293 @@ Errors include a request ID and never expose stack traces, secrets, or raw provi
 
 #### `users`
 
-| Field | Type | Notes |
-|---|---|---|
-| `_id` | ObjectId | Primary key |
-| `email` | string | Unique, lowercase, indexed |
-| `emailVerifiedAt` | Date/null | Verification state |
-| `passwordHash` | string | Argon2id or bcrypt with strong cost |
-| `firstName`, `lastName` | string | Display and personalization |
-| `role` | enum | `user`, `admin`; role changes audited |
-| `status` | enum | `active`, `suspended`, `deleted` |
-| `onboardingCompletedAt` | Date/null | Drives onboarding route guard |
-| `avatarUrl` | string/null | Storage key or signed URL reference |
-| `locale`, `timezone` | string | Notifications and formatting |
-| `tokenVersion` | number | Invalidates existing sessions after security events |
-| `lastLoginAt` | Date/null | Security overview |
-| `deletedAt` | Date/null | Soft deletion marker |
-| `createdAt`, `updatedAt` | Date | Timestamps |
+| Field                    | Type        | Notes                                               |
+| ------------------------ | ----------- | --------------------------------------------------- |
+| `_id`                    | ObjectId    | Primary key                                         |
+| `email`                  | string      | Unique, lowercase, indexed                          |
+| `emailVerifiedAt`        | Date/null   | Verification state                                  |
+| `passwordHash`           | string      | Argon2id or bcrypt with strong cost                 |
+| `firstName`, `lastName`  | string      | Display and personalization                         |
+| `role`                   | enum        | `user`, `admin`; role changes audited               |
+| `status`                 | enum        | `active`, `suspended`, `deleted`                    |
+| `onboardingCompletedAt`  | Date/null   | Drives onboarding route guard                       |
+| `avatarUrl`              | string/null | Storage key or signed URL reference                 |
+| `locale`, `timezone`     | string      | Notifications and formatting                        |
+| `tokenVersion`           | number      | Invalidates existing sessions after security events |
+| `lastLoginAt`            | Date/null   | Security overview                                   |
+| `deletedAt`              | Date/null   | Soft deletion marker                                |
+| `createdAt`, `updatedAt` | Date        | Timestamps                                          |
 
 #### `user_profiles`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Unique, indexed |
-| `headline`, `summary` | string | Career profile |
-| `location` | string | User location |
-| `skills` | string[] | Normalized skill list |
-| `experience` | embedded array | Company, role, dates, description, achievements |
-| `education` | embedded array | Institution, degree, dates, details |
-| `links` | embedded object | Website, LinkedIn, GitHub, portfolio |
-| `preferences` | embedded object | Job goals, industries, remote preference |
-| `schemaVersion` | number | Migration support |
+| Field                 | Type            | Notes                                           |
+| --------------------- | --------------- | ----------------------------------------------- |
+| `userId`              | ObjectId ref    | Unique, indexed                                 |
+| `headline`, `summary` | string          | Career profile                                  |
+| `location`            | string          | User location                                   |
+| `skills`              | string[]        | Normalized skill list                           |
+| `experience`          | embedded array  | Company, role, dates, description, achievements |
+| `education`           | embedded array  | Institution, degree, dates, details             |
+| `links`               | embedded object | Website, LinkedIn, GitHub, portfolio            |
+| `preferences`         | embedded object | Job goals, industries, remote preference        |
+| `schemaVersion`       | number          | Migration support                               |
 
 #### `refresh_tokens`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed |
-| `tokenHash` | string | Hashed refresh token, unique |
-| `expiresAt` | Date | TTL index |
-| `revokedAt` | Date/null | Rotation/revocation |
-| `familyId` | string | Detects token reuse |
-| `userAgent`, `ipHash` | string | Device metadata; IP stored hashed |
-| `createdAt` | Date | Timestamp |
+| Field                 | Type         | Notes                             |
+| --------------------- | ------------ | --------------------------------- |
+| `userId`              | ObjectId ref | Indexed                           |
+| `tokenHash`           | string       | Hashed refresh token, unique      |
+| `expiresAt`           | Date         | TTL index                         |
+| `revokedAt`           | Date/null    | Rotation/revocation               |
+| `familyId`            | string       | Detects token reuse               |
+| `userAgent`, `ipHash` | string       | Device metadata; IP stored hashed |
+| `createdAt`           | Date         | Timestamp                         |
 
 #### `email_tokens` / `password_reset_tokens`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed |
-| `tokenHash` | string | Unique hash |
-| `type` | enum | Verification/reset |
-| `expiresAt` | Date | Short TTL |
-| `usedAt` | Date/null | Single use |
-| `requestIpHash` | string | Abuse tracking |
+| Field           | Type         | Notes              |
+| --------------- | ------------ | ------------------ |
+| `userId`        | ObjectId ref | Indexed            |
+| `tokenHash`     | string       | Unique hash        |
+| `type`          | enum         | Verification/reset |
+| `expiresAt`     | Date         | Short TTL          |
+| `usedAt`        | Date/null    | Single use         |
+| `requestIpHash` | string       | Abuse tracking     |
 
 #### `resumes`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed with `updatedAt` |
-| `title` | string | User-visible name |
-| `templateId` | ObjectId ref | Template catalog |
-| `targetRole` | string | Used by AI tools |
-| `content` | embedded object | Contact, summary, skills, experience, education, projects, certifications, custom sections |
-| `settings` | embedded object | Typography, spacing, visibility toggles, language |
-| `status` | enum | `draft`, `ready`, `archived` |
-| `currentVersion` | number | Version counter |
-| `lastAnalyzedAt`, `lastExportedAt` | Date/null | Activity metadata |
-| `schemaVersion` | number | Resume content schema version |
-| `deletedAt` | Date/null | Soft deletion |
-| `createdAt`, `updatedAt` | Date | Timestamps |
+| Field                              | Type            | Notes                                                                                      |
+| ---------------------------------- | --------------- | ------------------------------------------------------------------------------------------ |
+| `userId`                           | ObjectId ref    | Indexed with `updatedAt`                                                                   |
+| `title`                            | string          | User-visible name                                                                          |
+| `templateId`                       | ObjectId ref    | Template catalog                                                                           |
+| `targetRole`                       | string          | Used by AI tools                                                                           |
+| `content`                          | embedded object | Contact, summary, skills, experience, education, projects, certifications, custom sections |
+| `settings`                         | embedded object | Typography, spacing, visibility toggles, language                                          |
+| `status`                           | enum            | `draft`, `ready`, `archived`                                                               |
+| `currentVersion`                   | number          | Version counter                                                                            |
+| `lastAnalyzedAt`, `lastExportedAt` | Date/null       | Activity metadata                                                                          |
+| `schemaVersion`                    | number          | Resume content schema version                                                              |
+| `deletedAt`                        | Date/null       | Soft deletion                                                                              |
+| `createdAt`, `updatedAt`           | Date            | Timestamps                                                                                 |
 
 #### `resume_versions`
 
-| Field | Type | Notes |
-|---|---|---|
-| `resumeId`, `userId` | ObjectId refs | Indexed |
-| `versionNumber` | number | Incrementing |
-| `contentSnapshot` | object | Complete editable snapshot |
-| `label`, `source` | string | Manual, AI, import, restore |
-| `createdAt` | Date | Timestamp |
+| Field                | Type          | Notes                       |
+| -------------------- | ------------- | --------------------------- |
+| `resumeId`, `userId` | ObjectId refs | Indexed                     |
+| `versionNumber`      | number        | Incrementing                |
+| `contentSnapshot`    | object        | Complete editable snapshot  |
+| `label`, `source`    | string        | Manual, AI, import, restore |
+| `createdAt`          | Date          | Timestamp                   |
 
 #### `templates`
 
-| Field | Type | Notes |
-|---|---|---|
-| `slug`, `name` | string | Unique slug |
-| `description`, `category` | string | Catalog filtering |
-| `thumbnailUrl`, `previewUrl` | string | Stored assets |
-| `schemaVersion` | number | Compatible resume content version |
-| `isPremium`, `isActive` | boolean | Entitlement and visibility |
-| `sortOrder` | number | Catalog ordering |
-| `renderConfig` | object | Server-side PDF template identifier, approved fonts/layout |
+| Field                        | Type    | Notes                                                      |
+| ---------------------------- | ------- | ---------------------------------------------------------- |
+| `slug`, `name`               | string  | Unique slug                                                |
+| `description`, `category`    | string  | Catalog filtering                                          |
+| `thumbnailUrl`, `previewUrl` | string  | Stored assets                                              |
+| `schemaVersion`              | number  | Compatible resume content version                          |
+| `isPremium`, `isActive`      | boolean | Entitlement and visibility                                 |
+| `sortOrder`                  | number  | Catalog ordering                                           |
+| `renderConfig`               | object  | Server-side PDF template identifier, approved fonts/layout |
 
 #### `documents`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed |
-| `name` | string | Original display name |
-| `kind` | enum | `resume_pdf`, `resume_docx`, `imported_resume`, `generated_pdf`, `portfolio_asset` |
-| `storageKey` | string | Private object storage key |
-| `mimeType`, `sizeBytes`, `checksum` | string/number | Validation and dedupe |
-| `status` | enum | `uploaded`, `parsing`, `parsed`, `failed`, `deleted` |
-| `extractedText` | string/null | Parser output; retention-controlled |
-| `parseError` | string/null | Safe internal error code/message |
-| `expiresAt` | Date/null | Cleanup policy |
-| `createdAt`, `updatedAt` | Date | Timestamps |
+| Field                               | Type          | Notes                                                                              |
+| ----------------------------------- | ------------- | ---------------------------------------------------------------------------------- |
+| `userId`                            | ObjectId ref  | Indexed                                                                            |
+| `name`                              | string        | Original display name                                                              |
+| `kind`                              | enum          | `resume_pdf`, `resume_docx`, `imported_resume`, `generated_pdf`, `portfolio_asset` |
+| `storageKey`                        | string        | Private object storage key                                                         |
+| `mimeType`, `sizeBytes`, `checksum` | string/number | Validation and dedupe                                                              |
+| `status`                            | enum          | `uploaded`, `parsing`, `parsed`, `failed`, `deleted`                               |
+| `extractedText`                     | string/null   | Parser output; retention-controlled                                                |
+| `parseError`                        | string/null   | Safe internal error code/message                                                   |
+| `expiresAt`                         | Date/null     | Cleanup policy                                                                     |
+| `createdAt`, `updatedAt`            | Date          | Timestamps                                                                         |
 
 #### `job_descriptions`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed |
-| `title`, `company` | string | Job metadata |
-| `description` | string | Raw source text, length-limited |
-| `extractedRequirements` | string[] | Optional structured extraction |
-| `location`, `sourceUrl` | string | Context |
-| `status` | enum | `active`, `archived` |
-| `createdAt`, `updatedAt` | Date | Timestamps |
+| Field                    | Type         | Notes                           |
+| ------------------------ | ------------ | ------------------------------- |
+| `userId`                 | ObjectId ref | Indexed                         |
+| `title`, `company`       | string       | Job metadata                    |
+| `description`            | string       | Raw source text, length-limited |
+| `extractedRequirements`  | string[]     | Optional structured extraction  |
+| `location`, `sourceUrl`  | string       | Context                         |
+| `status`                 | enum         | `active`, `archived`            |
+| `createdAt`, `updatedAt` | Date         | Timestamps                      |
 
 #### `match_results`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId`, `resumeId`, `jobDescriptionId` | ObjectId refs | Indexed |
-| `score` | number | Bounded, explainable score |
-| `matchedSkills`, `missingSkills` | string[] | Evidence-based output |
-| `recommendations` | embedded array | Actionable suggestions |
-| `aiProvider`, `aiModel`, `promptVersion` | string | Traceability |
-| `inputHash` | string | Prevents duplicate repeat calls |
-| `createdAt` | Date | Timestamp |
+| Field                                    | Type           | Notes                           |
+| ---------------------------------------- | -------------- | ------------------------------- |
+| `userId`, `resumeId`, `jobDescriptionId` | ObjectId refs  | Indexed                         |
+| `score`                                  | number         | Bounded, explainable score      |
+| `matchedSkills`, `missingSkills`         | string[]       | Evidence-based output           |
+| `recommendations`                        | embedded array | Actionable suggestions          |
+| `aiProvider`, `aiModel`, `promptVersion` | string         | Traceability                    |
+| `inputHash`                              | string         | Prevents duplicate repeat calls |
+| `createdAt`                              | Date           | Timestamp                       |
 
 #### `resume_analyses`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId`, `resumeId` | ObjectId refs | Indexed |
-| `overallScore` | number | Derived from real rules and AI output |
-| `categories` | embedded object | ATS, clarity, impact, structure, keywords |
-| `issues`, `strengths` | embedded arrays | Severity and evidence |
-| `suggestions` | embedded array | Priority and rationale |
-| `aiProvider`, `aiModel`, `promptVersion` | string | Traceability |
-| `createdAt` | Date | Timestamp |
+| Field                                    | Type            | Notes                                     |
+| ---------------------------------------- | --------------- | ----------------------------------------- |
+| `userId`, `resumeId`                     | ObjectId refs   | Indexed                                   |
+| `overallScore`                           | number          | Derived from real rules and AI output     |
+| `categories`                             | embedded object | ATS, clarity, impact, structure, keywords |
+| `issues`, `strengths`                    | embedded arrays | Severity and evidence                     |
+| `suggestions`                            | embedded array  | Priority and rationale                    |
+| `aiProvider`, `aiModel`, `promptVersion` | string          | Traceability                              |
+| `createdAt`                              | Date            | Timestamp                                 |
 
 #### `portfolios`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Unique |
-| `slug` | string | Unique, validated, reserved-word checked |
-| `headline`, `bio` | string | Public profile content |
-| `theme` | embedded object | Brand-approved theme options only |
-| `skills` | string[] | Display skills |
-| `socialLinks` | embedded object | Validated URLs |
-| `visibility` | enum | `private`, `unlisted`, `public` |
-| `seo` | embedded object | Title, description, social image |
-| `publishedAt` | Date/null | Publication state |
-| `createdAt`, `updatedAt` | Date | Timestamps |
+| Field                    | Type            | Notes                                    |
+| ------------------------ | --------------- | ---------------------------------------- |
+| `userId`                 | ObjectId ref    | Unique                                   |
+| `slug`                   | string          | Unique, validated, reserved-word checked |
+| `headline`, `bio`        | string          | Public profile content                   |
+| `theme`                  | embedded object | Brand-approved theme options only        |
+| `skills`                 | string[]        | Display skills                           |
+| `socialLinks`            | embedded object | Validated URLs                           |
+| `visibility`             | enum            | `private`, `unlisted`, `public`          |
+| `seo`                    | embedded object | Title, description, social image         |
+| `publishedAt`            | Date/null       | Publication state                        |
+| `createdAt`, `updatedAt` | Date            | Timestamps                               |
 
 #### `portfolio_projects`
 
-| Field | Type | Notes |
-|---|---|---|
-| `portfolioId`, `userId` | ObjectId refs | Indexed |
-| `title`, `description`, `role` | string | Project content |
-| `technologies` | string[] | Tags |
-| `link`, `repositoryUrl` | string | Validated URLs |
-| `mediaKeys` | string[] | Storage references |
-| `sortOrder`, `isFeatured` | number/boolean | Display controls |
-| `createdAt`, `updatedAt` | Date | Timestamps |
+| Field                          | Type           | Notes              |
+| ------------------------------ | -------------- | ------------------ |
+| `portfolioId`, `userId`        | ObjectId refs  | Indexed            |
+| `title`, `description`, `role` | string         | Project content    |
+| `technologies`                 | string[]       | Tags               |
+| `link`, `repositoryUrl`        | string         | Validated URLs     |
+| `mediaKeys`                    | string[]       | Storage references |
+| `sortOrder`, `isFeatured`      | number/boolean | Display controls   |
+| `createdAt`, `updatedAt`       | Date           | Timestamps         |
 
 #### `ai_conversations`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed |
-| `type` | enum | `career_advice`, `interview`, `portfolio`, `resume` |
-| `title` | string | Derived from real content |
-| `contextRefs` | embedded array | Resume/job/portfolio references only |
-| `messages` | embedded array or ref to `ai_messages` | Role, content, createdAt, token counts |
-| `status` | enum | `active`, `archived` |
-| `createdAt`, `updatedAt` | Date | Timestamps |
+| Field                    | Type                                   | Notes                                               |
+| ------------------------ | -------------------------------------- | --------------------------------------------------- |
+| `userId`                 | ObjectId ref                           | Indexed                                             |
+| `type`                   | enum                                   | `career_advice`, `interview`, `portfolio`, `resume` |
+| `title`                  | string                                 | Derived from real content                           |
+| `contextRefs`            | embedded array                         | Resume/job/portfolio references only                |
+| `messages`               | embedded array or ref to `ai_messages` | Role, content, createdAt, token counts              |
+| `status`                 | enum                                   | `active`, `archived`                                |
+| `createdAt`, `updatedAt` | Date                                   | Timestamps                                          |
 
 #### `ai_generations`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed |
-| `type` | enum | Content generation, rewrite, analysis, match, advice, interview feedback |
-| `provider`, `model`, `promptVersion` | string | Reproducibility |
-| `status` | enum | `queued`, `running`, `succeeded`, `failed` |
-| `inputHash`, `outputRef` | string | Avoid raw secret storage; reference result collection |
-| `tokensIn`, `tokensOut`, `costEstimate`, `latencyMs` | number | Usage and cost tracking |
-| `errorCode` | string/null | Safe failure reason |
-| `createdAt`, `completedAt` | Date | Timestamps |
+| Field                                                | Type         | Notes                                                                    |
+| ---------------------------------------------------- | ------------ | ------------------------------------------------------------------------ |
+| `userId`                                             | ObjectId ref | Indexed                                                                  |
+| `type`                                               | enum         | Content generation, rewrite, analysis, match, advice, interview feedback |
+| `provider`, `model`, `promptVersion`                 | string       | Reproducibility                                                          |
+| `status`                                             | enum         | `queued`, `running`, `succeeded`, `failed`                               |
+| `inputHash`, `outputRef`                             | string       | Avoid raw secret storage; reference result collection                    |
+| `tokensIn`, `tokensOut`, `costEstimate`, `latencyMs` | number       | Usage and cost tracking                                                  |
+| `errorCode`                                          | string/null  | Safe failure reason                                                      |
+| `createdAt`, `completedAt`                           | Date         | Timestamps                                                               |
 
 #### `ai_usage`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Unique with period |
-| `periodKey` | string | `YYYY-MM` |
-| `generationCount` | number | Counted server-side |
-| `tokensIn`, `tokensOut` | number | Aggregated |
-| `quotaOverride` | number/null | Manual support adjustment with audit |
-| `updatedAt` | Date | Timestamp |
+| Field                   | Type         | Notes                                |
+| ----------------------- | ------------ | ------------------------------------ |
+| `userId`                | ObjectId ref | Unique with period                   |
+| `periodKey`             | string       | `YYYY-MM`                            |
+| `generationCount`       | number       | Counted server-side                  |
+| `tokensIn`, `tokensOut` | number       | Aggregated                           |
+| `quotaOverride`         | number/null  | Manual support adjustment with audit |
+| `updatedAt`             | Date         | Timestamp                            |
 
 #### `interview_sessions`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed |
-| `resumeId`, `jobDescriptionId` | ObjectId refs/null | Context |
-| `role`, `company`, `difficulty` | string/enum | Session setup |
-| `mode` | enum | `behavioral`, `technical`, `mixed` |
-| `questions` | embedded array | Prompt, expectedFocus, order |
-| `answers` | embedded array | User answer, feedback, score, timestamps |
-| `overallFeedback` | object/null | Generated only after real answers |
-| `status` | enum | `draft`, `in_progress`, `completed`, `failed` |
-| `createdAt`, `updatedAt` | Date | Timestamps |
+| Field                           | Type               | Notes                                         |
+| ------------------------------- | ------------------ | --------------------------------------------- |
+| `userId`                        | ObjectId ref       | Indexed                                       |
+| `resumeId`, `jobDescriptionId`  | ObjectId refs/null | Context                                       |
+| `role`, `company`, `difficulty` | string/enum        | Session setup                                 |
+| `mode`                          | enum               | `behavioral`, `technical`, `mixed`            |
+| `questions`                     | embedded array     | Prompt, expectedFocus, order                  |
+| `answers`                       | embedded array     | User answer, feedback, score, timestamps      |
+| `overallFeedback`               | object/null        | Generated only after real answers             |
+| `status`                        | enum               | `draft`, `in_progress`, `completed`, `failed` |
+| `createdAt`, `updatedAt`        | Date               | Timestamps                                    |
 
 #### `notifications`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed with `readAt` |
-| `type` | enum | System, billing, AI completion, security, product |
-| `title`, `message` | string | Safe rendered text |
-| `data` | object | Links/resource IDs |
-| `readAt` | Date/null | Read state |
-| `createdAt` | Date | Timestamp |
+| Field              | Type         | Notes                                             |
+| ------------------ | ------------ | ------------------------------------------------- |
+| `userId`           | ObjectId ref | Indexed with `readAt`                             |
+| `type`             | enum         | System, billing, AI completion, security, product |
+| `title`, `message` | string       | Safe rendered text                                |
+| `data`             | object       | Links/resource IDs                                |
+| `readAt`           | Date/null    | Read state                                        |
+| `createdAt`        | Date         | Timestamp                                         |
 
 #### `plans`
 
-| Field | Type | Notes |
-|---|---|---|
-| `code`, `name` | string | Unique catalog code |
-| `description` | string | Pricing page content |
+| Field                            | Type               | Notes                                                    |
+| -------------------------------- | ------------------ | -------------------------------------------------------- |
+| `code`, `name`                   | string             | Unique catalog code                                      |
+| `description`                    | string             | Pricing page content                                     |
 | `currency`, `amount`, `interval` | string/number/enum | Display metadata; source of truth mirrored from provider |
-| `providerPriceIds` | object | Provider-specific IDs |
-| `features` | embedded object | Resume limits, AI quota, PDF limits, premium templates |
-| `isActive`, `sortOrder` | boolean/number | Catalog control |
-| `updatedAt` | Date | Timestamp |
+| `providerPriceIds`               | object             | Provider-specific IDs                                    |
+| `features`                       | embedded object    | Resume limits, AI quota, PDF limits, premium templates   |
+| `isActive`, `sortOrder`          | boolean/number     | Catalog control                                          |
+| `updatedAt`                      | Date               | Timestamp                                                |
 
 #### `subscriptions`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | ObjectId ref | Indexed |
-| `planId` | ObjectId ref | Plan reference |
-| `provider`, `providerCustomerId`, `providerSubscriptionId` | string | Unique provider subscription |
-| `status` | enum | Active, trialing, past_due, canceled, incomplete, unpaid |
-| `currentPeriodStart`, `currentPeriodEnd` | Date | Access window |
-| `cancelAtPeriodEnd` | boolean | Portal state |
-| `priceId`, `currency`, `amount` | string/number | Actual paid plan |
-| `updatedAt` | Date | Webhook-driven state |
+| Field                                                      | Type          | Notes                                                    |
+| ---------------------------------------------------------- | ------------- | -------------------------------------------------------- |
+| `userId`                                                   | ObjectId ref  | Indexed                                                  |
+| `planId`                                                   | ObjectId ref  | Plan reference                                           |
+| `provider`, `providerCustomerId`, `providerSubscriptionId` | string        | Unique provider subscription                             |
+| `status`                                                   | enum          | Active, trialing, past_due, canceled, incomplete, unpaid |
+| `currentPeriodStart`, `currentPeriodEnd`                   | Date          | Access window                                            |
+| `cancelAtPeriodEnd`                                        | boolean       | Portal state                                             |
+| `priceId`, `currency`, `amount`                            | string/number | Actual paid plan                                         |
+| `updatedAt`                                                | Date          | Webhook-driven state                                     |
 
 #### `payments`
 
-| Field | Type | Notes |
-|---|---|---|
-| `userId`, `subscriptionId` | ObjectId refs | Indexed |
-| `provider`, `providerPaymentIntentId` | string | Unique |
-| `amount`, `currency`, `status` | number/string/enum | Provider event data |
-| `receiptUrl` | string/null | From provider |
-| `createdAt` | Date | Timestamp |
+| Field                                 | Type               | Notes               |
+| ------------------------------------- | ------------------ | ------------------- |
+| `userId`, `subscriptionId`            | ObjectId refs      | Indexed             |
+| `provider`, `providerPaymentIntentId` | string             | Unique              |
+| `amount`, `currency`, `status`        | number/string/enum | Provider event data |
+| `receiptUrl`                          | string/null        | From provider       |
+| `createdAt`                           | Date               | Timestamp           |
 
 #### `webhook_events`
 
-| Field | Type | Notes |
-|---|---|---|
-| `provider`, `eventId` | string | Unique pair for idempotency |
-| `type` | string | Provider event type |
-| `payloadHash` | string | Audit and dedupe |
-| `status` | enum | `received`, `processed`, `failed`, `ignored` |
-| `errorCode` | string/null | Safe failure reason |
-| `receivedAt`, `processedAt` | Date | Timestamps |
+| Field                       | Type        | Notes                                        |
+| --------------------------- | ----------- | -------------------------------------------- |
+| `provider`, `eventId`       | string      | Unique pair for idempotency                  |
+| `type`                      | string      | Provider event type                          |
+| `payloadHash`               | string      | Audit and dedupe                             |
+| `status`                    | enum        | `received`, `processed`, `failed`, `ignored` |
+| `errorCode`                 | string/null | Safe failure reason                          |
+| `receivedAt`, `processedAt` | Date        | Timestamps                                   |
 
 #### `audit_logs`
 
-| Field | Type | Notes |
-|---|---|---|
-| `actorId`, `actorRole` | ObjectId/ref, string | Who acted |
-| `action`, `resourceType`, `resourceId` | string | What changed |
-| `metadata` | object | Non-sensitive before/after summary |
-| `ipHash`, `userAgent` | string | Security context |
-| `createdAt` | Date | Timestamp; append-only |
+| Field                                  | Type                 | Notes                              |
+| -------------------------------------- | -------------------- | ---------------------------------- |
+| `actorId`, `actorRole`                 | ObjectId/ref, string | Who acted                          |
+| `action`, `resourceType`, `resourceId` | string               | What changed                       |
+| `metadata`                             | object               | Non-sensitive before/after summary |
+| `ipHash`, `userAgent`                  | string               | Security context                   |
+| `createdAt`                            | Date                 | Timestamp; append-only             |
 
 ### 4.3 Relationship Summary
 
@@ -942,175 +942,175 @@ ai-career-studio/
 
 ### 6.2 Health
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/health/live` | No | Process liveness |
-| GET | `/health/ready` | No | MongoDB and critical integration readiness |
+| Method | Endpoint        | Auth | Purpose                                    |
+| ------ | --------------- | ---- | ------------------------------------------ |
+| GET    | `/health/live`  | No   | Process liveness                           |
+| GET    | `/health/ready` | No   | MongoDB and critical integration readiness |
 
 ### 6.3 Authentication
 
-| Method | Endpoint | Auth | Key request data | Purpose |
-|---|---|---|---|---|
-| POST | `/auth/register` | No | firstName, lastName, email, password, consent | Create account and send verification email |
-| POST | `/auth/verify-email` | No | token | Verify email |
-| POST | `/auth/resend-verification` | No/limited | email | Resend verification |
-| POST | `/auth/login` | No | email, password | Issue access + refresh cookies |
-| POST | `/auth/refresh` | Refresh cookie | none | Rotate refresh token and issue new access token |
-| POST | `/auth/logout` | Access cookie | none | Revoke current refresh session and clear cookies |
-| POST | `/auth/logout-all` | Yes | none | Revoke all sessions by incrementing `tokenVersion` |
-| POST | `/auth/forgot-password` | No/limited | email | Send reset link without account enumeration |
-| POST | `/auth/reset-password` | No | token, newPassword | Reset password and revoke sessions |
-| GET | `/auth/me` | Yes | none | Return current user and entitlements |
-| PATCH | `/auth/me` | Yes | name, locale, timezone | Update basic account fields |
-| POST | `/auth/onboarding/complete` | Yes | profile/goals payload | Mark onboarding complete |
+| Method | Endpoint                    | Auth           | Key request data                              | Purpose                                            |
+| ------ | --------------------------- | -------------- | --------------------------------------------- | -------------------------------------------------- |
+| POST   | `/auth/register`            | No             | firstName, lastName, email, password, consent | Create account and send verification email         |
+| POST   | `/auth/verify-email`        | No             | token                                         | Verify email                                       |
+| POST   | `/auth/resend-verification` | No/limited     | email                                         | Resend verification                                |
+| POST   | `/auth/login`               | No             | email, password                               | Issue access + refresh cookies                     |
+| POST   | `/auth/refresh`             | Refresh cookie | none                                          | Rotate refresh token and issue new access token    |
+| POST   | `/auth/logout`              | Access cookie  | none                                          | Revoke current refresh session and clear cookies   |
+| POST   | `/auth/logout-all`          | Yes            | none                                          | Revoke all sessions by incrementing `tokenVersion` |
+| POST   | `/auth/forgot-password`     | No/limited     | email                                         | Send reset link without account enumeration        |
+| POST   | `/auth/reset-password`      | No             | token, newPassword                            | Reset password and revoke sessions                 |
+| GET    | `/auth/me`                  | Yes            | none                                          | Return current user and entitlements               |
+| PATCH  | `/auth/me`                  | Yes            | name, locale, timezone                        | Update basic account fields                        |
+| POST   | `/auth/onboarding/complete` | Yes            | profile/goals payload                         | Mark onboarding complete                           |
 
 ### 6.4 Users and Settings
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/users/me/profile` | Yes | Get profile |
-| PATCH | `/users/me/profile` | Yes | Update profile, skills, experience, education, links |
-| GET | `/users/me/settings` | Yes | Get notification/privacy/display settings |
-| PATCH | `/users/me/settings` | Yes | Update settings |
-| POST | `/users/me/avatar` | Yes | Upload/change avatar through storage service |
-| DELETE | `/users/me/avatar` | Yes | Remove avatar |
-| DELETE | `/users/me` | Yes | Verified account deletion request |
-| GET | `/users/me/sessions` | Yes | List active sessions |
-| DELETE | `/users/me/sessions/:id` | Yes | Revoke a session |
+| Method | Endpoint                 | Auth | Purpose                                              |
+| ------ | ------------------------ | ---- | ---------------------------------------------------- |
+| GET    | `/users/me/profile`      | Yes  | Get profile                                          |
+| PATCH  | `/users/me/profile`      | Yes  | Update profile, skills, experience, education, links |
+| GET    | `/users/me/settings`     | Yes  | Get notification/privacy/display settings            |
+| PATCH  | `/users/me/settings`     | Yes  | Update settings                                      |
+| POST   | `/users/me/avatar`       | Yes  | Upload/change avatar through storage service         |
+| DELETE | `/users/me/avatar`       | Yes  | Remove avatar                                        |
+| DELETE | `/users/me`              | Yes  | Verified account deletion request                    |
+| GET    | `/users/me/sessions`     | Yes  | List active sessions                                 |
+| DELETE | `/users/me/sessions/:id` | Yes  | Revoke a session                                     |
 
 ### 6.5 Resumes
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/resumes` | Yes | List resumes with pagination/filtering |
-| POST | `/resumes` | Yes | Create resume from blank/template/import |
-| GET | `/resumes/:id` | Yes | Get owned resume |
-| PATCH | `/resumes/:id` | Yes | Update resume content/settings/autosave |
-| DELETE | `/resumes/:id` | Yes | Soft-delete resume |
-| POST | `/resumes/:id/duplicate` | Yes | Duplicate resume |
-| POST | `/resumes/:id/archive` | Yes | Archive/unarchive |
-| GET | `/resumes/:id/versions` | Yes | List versions |
-| POST | `/resumes/:id/versions` | Yes | Create manual version |
-| POST | `/resumes/:id/versions/:versionId/restore` | Yes | Restore version as new version |
-| POST | `/resumes/:id/export/pdf` | Yes | Generate PDF and return document metadata/download URL |
-| POST | `/resumes/:id/analyze` | Yes | Run ATS analysis |
-| GET | `/resumes/:id/analysis` | Yes | Latest analysis history |
+| Method | Endpoint                                   | Auth | Purpose                                                |
+| ------ | ------------------------------------------ | ---- | ------------------------------------------------------ |
+| GET    | `/resumes`                                 | Yes  | List resumes with pagination/filtering                 |
+| POST   | `/resumes`                                 | Yes  | Create resume from blank/template/import               |
+| GET    | `/resumes/:id`                             | Yes  | Get owned resume                                       |
+| PATCH  | `/resumes/:id`                             | Yes  | Update resume content/settings/autosave                |
+| DELETE | `/resumes/:id`                             | Yes  | Soft-delete resume                                     |
+| POST   | `/resumes/:id/duplicate`                   | Yes  | Duplicate resume                                       |
+| POST   | `/resumes/:id/archive`                     | Yes  | Archive/unarchive                                      |
+| GET    | `/resumes/:id/versions`                    | Yes  | List versions                                          |
+| POST   | `/resumes/:id/versions`                    | Yes  | Create manual version                                  |
+| POST   | `/resumes/:id/versions/:versionId/restore` | Yes  | Restore version as new version                         |
+| POST   | `/resumes/:id/export/pdf`                  | Yes  | Generate PDF and return document metadata/download URL |
+| POST   | `/resumes/:id/analyze`                     | Yes  | Run ATS analysis                                       |
+| GET    | `/resumes/:id/analysis`                    | Yes  | Latest analysis history                                |
 
 ### 6.6 Templates
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/templates` | No | Public catalog metadata |
-| GET | `/templates/:slug` | No | Template details/preview |
-| GET | `/templates/:slug/render-config` | Yes | Template render configuration for authorized use |
-| POST | `/admin/templates` | Admin | Create template |
-| PATCH | `/admin/templates/:id` | Admin | Update template |
-| DELETE | `/admin/templates/:id` | Admin | Deactivate/delete template |
+| Method | Endpoint                         | Auth  | Purpose                                          |
+| ------ | -------------------------------- | ----- | ------------------------------------------------ |
+| GET    | `/templates`                     | No    | Public catalog metadata                          |
+| GET    | `/templates/:slug`               | No    | Template details/preview                         |
+| GET    | `/templates/:slug/render-config` | Yes   | Template render configuration for authorized use |
+| POST   | `/admin/templates`               | Admin | Create template                                  |
+| PATCH  | `/admin/templates/:id`           | Admin | Update template                                  |
+| DELETE | `/admin/templates/:id`           | Admin | Deactivate/delete template                       |
 
 ### 6.7 Documents
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/documents` | Yes | List documents |
-| POST | `/documents` | Yes | Multipart upload with validation |
-| GET | `/documents/:id` | Yes | Get metadata |
-| POST | `/documents/:id/parse` | Yes | Parse PDF/DOCX into structured resume text |
-| GET | `/documents/:id/download` | Yes | Short-lived signed redirect |
-| DELETE | `/documents/:id` | Yes | Delete document and storage object |
-| POST | `/documents/:id/create-resume` | Yes | Create resume from parsed content |
+| Method | Endpoint                       | Auth | Purpose                                    |
+| ------ | ------------------------------ | ---- | ------------------------------------------ |
+| GET    | `/documents`                   | Yes  | List documents                             |
+| POST   | `/documents`                   | Yes  | Multipart upload with validation           |
+| GET    | `/documents/:id`               | Yes  | Get metadata                               |
+| POST   | `/documents/:id/parse`         | Yes  | Parse PDF/DOCX into structured resume text |
+| GET    | `/documents/:id/download`      | Yes  | Short-lived signed redirect                |
+| DELETE | `/documents/:id`               | Yes  | Delete document and storage object         |
+| POST   | `/documents/:id/create-resume` | Yes  | Create resume from parsed content          |
 
 ### 6.8 Jobs and Matching
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/jobs` | Yes | List saved job descriptions |
-| POST | `/jobs` | Yes | Create job description |
-| GET | `/jobs/:id` | Yes | Get job description |
-| PATCH | `/jobs/:id` | Yes | Update job description |
-| DELETE | `/jobs/:id` | Yes | Delete job description |
-| POST | `/jobs/:id/match` | Yes | Match against selected resume |
-| GET | `/jobs/:id/matches` | Yes | Match history |
-| GET | `/matches/:id` | Yes | Get match result |
+| Method | Endpoint            | Auth | Purpose                       |
+| ------ | ------------------- | ---- | ----------------------------- |
+| GET    | `/jobs`             | Yes  | List saved job descriptions   |
+| POST   | `/jobs`             | Yes  | Create job description        |
+| GET    | `/jobs/:id`         | Yes  | Get job description           |
+| PATCH  | `/jobs/:id`         | Yes  | Update job description        |
+| DELETE | `/jobs/:id`         | Yes  | Delete job description        |
+| POST   | `/jobs/:id/match`   | Yes  | Match against selected resume |
+| GET    | `/jobs/:id/matches` | Yes  | Match history                 |
+| GET    | `/matches/:id`      | Yes  | Get match result              |
 
 ### 6.9 AI Endpoints
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| POST | `/ai/generate/resume-section` | Yes | Generate or rewrite a resume section from real user context |
-| POST | `/ai/rewrite` | Yes | Rewrite selected text with tone/length constraints |
-| POST | `/ai/analyze-resume` | Yes | ATS-style resume analysis |
-| POST | `/ai/match-job` | Yes | Resume/job description matching with explanations |
-| POST | `/ai/generate-portfolio-content` | Yes | Portfolio headline/bio/project copy |
-| POST | `/ai/career-advice` | Yes | Career guidance conversation response |
-| POST | `/ai/interview/questions` | Yes | Generate interview questions |
-| POST | `/ai/interview/:sessionId/feedback` | Yes | Evaluate real user answer |
-| GET | `/ai/jobs/:jobId` | Yes | Poll async AI job status/result |
-| GET | `/ai/usage/me` | Yes | Current-period usage and quota |
+| Method | Endpoint                            | Auth | Purpose                                                     |
+| ------ | ----------------------------------- | ---- | ----------------------------------------------------------- |
+| POST   | `/ai/generate/resume-section`       | Yes  | Generate or rewrite a resume section from real user context |
+| POST   | `/ai/rewrite`                       | Yes  | Rewrite selected text with tone/length constraints          |
+| POST   | `/ai/analyze-resume`                | Yes  | ATS-style resume analysis                                   |
+| POST   | `/ai/match-job`                     | Yes  | Resume/job description matching with explanations           |
+| POST   | `/ai/generate-portfolio-content`    | Yes  | Portfolio headline/bio/project copy                         |
+| POST   | `/ai/career-advice`                 | Yes  | Career guidance conversation response                       |
+| POST   | `/ai/interview/questions`           | Yes  | Generate interview questions                                |
+| POST   | `/ai/interview/:sessionId/feedback` | Yes  | Evaluate real user answer                                   |
+| GET    | `/ai/jobs/:jobId`                   | Yes  | Poll async AI job status/result                             |
+| GET    | `/ai/usage/me`                      | Yes  | Current-period usage and quota                              |
 
 ### 6.10 Portfolio
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/portfolio/me` | Yes | Get own portfolio |
-| POST | `/portfolio` | Yes | Create portfolio |
-| PATCH | `/portfolio/:id` | Yes | Update content/theme/SEO |
-| POST | `/portfolio/:id/publish` | Yes | Publish/unpublish |
-| GET | `/portfolio/:id/projects` | Yes | List projects |
-| POST | `/portfolio/:id/projects` | Yes | Add project |
-| PATCH | `/portfolio/:id/projects/:projectId` | Yes | Update project |
-| DELETE | `/portfolio/:id/projects/:projectId` | Yes | Delete project |
-| GET | `/portfolio/public/:slug` | No | Get public portfolio if visible |
+| Method | Endpoint                             | Auth | Purpose                         |
+| ------ | ------------------------------------ | ---- | ------------------------------- |
+| GET    | `/portfolio/me`                      | Yes  | Get own portfolio               |
+| POST   | `/portfolio`                         | Yes  | Create portfolio                |
+| PATCH  | `/portfolio/:id`                     | Yes  | Update content/theme/SEO        |
+| POST   | `/portfolio/:id/publish`             | Yes  | Publish/unpublish               |
+| GET    | `/portfolio/:id/projects`            | Yes  | List projects                   |
+| POST   | `/portfolio/:id/projects`            | Yes  | Add project                     |
+| PATCH  | `/portfolio/:id/projects/:projectId` | Yes  | Update project                  |
+| DELETE | `/portfolio/:id/projects/:projectId` | Yes  | Delete project                  |
+| GET    | `/portfolio/public/:slug`            | No   | Get public portfolio if visible |
 
 ### 6.11 Interview Preparation
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/interviews` | Yes | List sessions |
-| POST | `/interviews` | Yes | Create session from resume/job/role/difficulty |
-| GET | `/interviews/:id` | Yes | Get session with questions/answers |
-| POST | `/interviews/:id/questions` | Yes | Generate next questions |
-| POST | `/interviews/:id/answers` | Yes | Submit answer for feedback |
-| PATCH | `/interviews/:id` | Yes | Update status/title |
-| DELETE | `/interviews/:id` | Yes | Delete session |
-| POST | `/interviews/:id/complete` | Yes | Generate final session summary |
+| Method | Endpoint                    | Auth | Purpose                                        |
+| ------ | --------------------------- | ---- | ---------------------------------------------- |
+| GET    | `/interviews`               | Yes  | List sessions                                  |
+| POST   | `/interviews`               | Yes  | Create session from resume/job/role/difficulty |
+| GET    | `/interviews/:id`           | Yes  | Get session with questions/answers             |
+| POST   | `/interviews/:id/questions` | Yes  | Generate next questions                        |
+| POST   | `/interviews/:id/answers`   | Yes  | Submit answer for feedback                     |
+| PATCH  | `/interviews/:id`           | Yes  | Update status/title                            |
+| DELETE | `/interviews/:id`           | Yes  | Delete session                                 |
+| POST   | `/interviews/:id/complete`  | Yes  | Generate final session summary                 |
 
 ### 6.12 Notifications
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/notifications` | Yes | List notifications |
-| GET | `/notifications/unread-count` | Yes | Badge count |
-| PATCH | `/notifications/:id/read` | Yes | Mark read |
-| PATCH | `/notifications/read-all` | Yes | Mark all read |
-| DELETE | `/notifications/:id` | Yes | Delete notification |
+| Method | Endpoint                      | Auth | Purpose             |
+| ------ | ----------------------------- | ---- | ------------------- |
+| GET    | `/notifications`              | Yes  | List notifications  |
+| GET    | `/notifications/unread-count` | Yes  | Badge count         |
+| PATCH  | `/notifications/:id/read`     | Yes  | Mark read           |
+| PATCH  | `/notifications/read-all`     | Yes  | Mark all read       |
+| DELETE | `/notifications/:id`          | Yes  | Delete notification |
 
 ### 6.13 Billing and Payments
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/billing/plans` | No | Real plan catalog from database |
-| GET | `/billing/subscription` | Yes | Current subscription and entitlements |
-| POST | `/billing/checkout` | Yes | Create provider checkout session; return redirect URL |
-| POST | `/billing/portal` | Yes | Create billing portal session |
-| POST | `/billing/cancel` | Yes | Cancel at period end through provider |
-| GET | `/billing/payments` | Yes | Payment history |
-| POST | `/webhooks/payments/:provider` | No, signature-verified | Provider webhook; idempotent source of truth |
+| Method | Endpoint                       | Auth                   | Purpose                                               |
+| ------ | ------------------------------ | ---------------------- | ----------------------------------------------------- |
+| GET    | `/billing/plans`               | No                     | Real plan catalog from database                       |
+| GET    | `/billing/subscription`        | Yes                    | Current subscription and entitlements                 |
+| POST   | `/billing/checkout`            | Yes                    | Create provider checkout session; return redirect URL |
+| POST   | `/billing/portal`              | Yes                    | Create billing portal session                         |
+| POST   | `/billing/cancel`              | Yes                    | Cancel at period end through provider                 |
+| GET    | `/billing/payments`            | Yes                    | Payment history                                       |
+| POST   | `/webhooks/payments/:provider` | No, signature-verified | Provider webhook; idempotent source of truth          |
 
 ### 6.14 Admin
 
-| Method | Endpoint | Auth | Purpose |
-|---|---|---|---|
-| GET | `/admin/overview` | Admin | Real aggregated counts/trends from database |
-| GET | `/admin/users` | Admin | User list with filters |
-| GET | `/admin/users/:id` | Admin | User detail |
-| PATCH | `/admin/users/:id/status` | Admin | Suspend/restore with audit |
-| PATCH | `/admin/users/:id/role` | Admin | Role change with audit |
-| GET | `/admin/resumes` | Admin | Moderation/read-only list |
-| GET | `/admin/subscriptions` | Admin | Subscription overview |
-| GET | `/admin/ai-usage` | Admin | Usage/cost overview |
-| GET | `/admin/audit-logs` | Admin | Append-only audit trail |
-| GET | `/admin/webhooks` | Admin | Webhook event status/retry view |
-| POST | `/admin/webhooks/:id/retry` | Admin | Retry failed webhook processing |
+| Method | Endpoint                    | Auth  | Purpose                                     |
+| ------ | --------------------------- | ----- | ------------------------------------------- |
+| GET    | `/admin/overview`           | Admin | Real aggregated counts/trends from database |
+| GET    | `/admin/users`              | Admin | User list with filters                      |
+| GET    | `/admin/users/:id`          | Admin | User detail                                 |
+| PATCH  | `/admin/users/:id/status`   | Admin | Suspend/restore with audit                  |
+| PATCH  | `/admin/users/:id/role`     | Admin | Role change with audit                      |
+| GET    | `/admin/resumes`            | Admin | Moderation/read-only list                   |
+| GET    | `/admin/subscriptions`      | Admin | Subscription overview                       |
+| GET    | `/admin/ai-usage`           | Admin | Usage/cost overview                         |
+| GET    | `/admin/audit-logs`         | Admin | Append-only audit trail                     |
+| GET    | `/admin/webhooks`           | Admin | Webhook event status/retry view             |
+| POST   | `/admin/webhooks/:id/retry` | Admin | Retry failed webhook processing             |
 
 ---
 
@@ -1164,11 +1164,11 @@ ai-career-studio/
 
 ### 7.6 Cookie Security
 
-| Cookie | HTTP-only | Secure | SameSite | Path | Purpose |
-|---|---|---|---|---|---|
-| `access_token` | Yes | Yes in production | Lax/Strict | `/` | API authentication |
-| `refresh_token` | Yes | Yes in production | Strict | `/api/v1/auth` | Refresh rotation |
-| `csrf_token` | No | Yes in production | Strict | `/` | Double-submit CSRF value for browser mutations |
+| Cookie          | HTTP-only | Secure            | SameSite   | Path           | Purpose                                        |
+| --------------- | --------- | ----------------- | ---------- | -------------- | ---------------------------------------------- |
+| `access_token`  | Yes       | Yes in production | Lax/Strict | `/`            | API authentication                             |
+| `refresh_token` | Yes       | Yes in production | Strict     | `/api/v1/auth` | Refresh rotation                               |
+| `csrf_token`    | No        | Yes in production | Strict     | `/`            | Double-submit CSRF value for browser mutations |
 
 Token payloads contain only `sub`, `role`, `tokenVersion`, `iat`, `exp`, and `jti` — never passwords, PII, or permissions that cannot be revoked.
 
@@ -1195,16 +1195,16 @@ Define a stable internal `AiProvider` interface with operations for text generat
 
 ### 8.3 AI Use Cases
 
-| Feature | Input | Output | Validation |
-|---|---|---|---|
-| Resume section generator | Resume context, target role, tone | Structured section content | Required fields, length limits, no unsupported claims |
-| Resume rewrite | Selected text, mode | Improved text | Length and forbidden-content checks |
-| ATS analysis | Resume content | Scores, issues, strengths, suggestions | Bounded scores, evidence references |
-| Job match | Resume + real job description | Score, matched/missing skills, recommendations | Explainable output tied to input |
-| Portfolio content | Portfolio/profile context | Headline, bio, project copy | Length/style constraints |
-| Career advisor | Conversation + context | Guidance message | Safety rules, no guaranteed outcomes |
-| Interview questions | Role, difficulty, context | Question list with focus areas | Count and format validation |
-| Interview feedback | Real answer + question | Feedback and score | Bounded score, actionable rationale |
+| Feature                  | Input                             | Output                                         | Validation                                            |
+| ------------------------ | --------------------------------- | ---------------------------------------------- | ----------------------------------------------------- |
+| Resume section generator | Resume context, target role, tone | Structured section content                     | Required fields, length limits, no unsupported claims |
+| Resume rewrite           | Selected text, mode               | Improved text                                  | Length and forbidden-content checks                   |
+| ATS analysis             | Resume content                    | Scores, issues, strengths, suggestions         | Bounded scores, evidence references                   |
+| Job match                | Resume + real job description     | Score, matched/missing skills, recommendations | Explainable output tied to input                      |
+| Portfolio content        | Portfolio/profile context         | Headline, bio, project copy                    | Length/style constraints                              |
+| Career advisor           | Conversation + context            | Guidance message                               | Safety rules, no guaranteed outcomes                  |
+| Interview questions      | Role, difficulty, context         | Question list with focus areas                 | Count and format validation                           |
+| Interview feedback       | Real answer + question            | Feedback and score                             | Bounded score, actionable rationale                   |
 
 ### 8.4 Prompt and Output Governance
 
@@ -1556,24 +1556,24 @@ Each phase ends with a gate. Do not begin later phases on unstable foundations.
 
 ### 13.1 Risks
 
-| Risk | Impact | Mitigation |
-|---|---|---|
-| AI hallucinates experience or metrics | High | Strict prompts, evidence checks, editable outputs, validation, user confirmation |
-| AI provider latency/outages/cost spikes | High | Timeouts, retries, circuit breaker, quotas, caching, usage alerts |
-| Puppeteer fails in deployment runtime | High | Pin versions, include Chromium dependencies, test in production-like image, serverless-compatible build if needed |
-| PDF parsing quality varies by source document | High | Support text-based PDFs/DOCX first, validate extracted text, show clear failure; OCR considered later with explicit user consent/cost |
-| Payment webhook processed twice or missed | High | Idempotency by event ID, signature verification, retry endpoint, reconciliation job |
-| Subscription state drift between provider and DB | High | Provider is authoritative; periodic reconciliation and admin webhook view |
-| Uploaded files contain malicious content | High | Magic-byte checks, size limits, private storage, signed URLs, scanning where available |
-| CSRF/session theft | High | HTTP-only cookies, Secure/SameSite, CSRF tokens, refresh rotation, reuse detection |
-| Cross-user data leakage | High | `userId` filters on every query, service-level ownership checks, integration tests |
-| MongoDB schema drift | Medium | Schema versioning, Zod validation, migration scripts, staged rollout |
-| Large resume/portfolio content degrades UX | Medium | Section-wise editing, payload limits, autosave debounce, pagination |
-| Premium feature gating inconsistent | Medium | Server-side entitlements are authoritative; UI gating mirrors server response |
-| Brand palette misused by new components | Medium | Central Tailwind tokens, lint/review checklist, shared UI components only |
-| Accessibility regressions | Medium | Shared components, automated checks, manual keyboard/screen-reader QA |
-| Email delivery failures block verification | Medium | Provider abstraction, retry queue, resend endpoint, deliverability monitoring |
-| Scope expansion across 17 modules | High | Phase gates, no parallel unstable foundations, approval before implementation |
+| Risk                                             | Impact | Mitigation                                                                                                                            |
+| ------------------------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| AI hallucinates experience or metrics            | High   | Strict prompts, evidence checks, editable outputs, validation, user confirmation                                                      |
+| AI provider latency/outages/cost spikes          | High   | Timeouts, retries, circuit breaker, quotas, caching, usage alerts                                                                     |
+| Puppeteer fails in deployment runtime            | High   | Pin versions, include Chromium dependencies, test in production-like image, serverless-compatible build if needed                     |
+| PDF parsing quality varies by source document    | High   | Support text-based PDFs/DOCX first, validate extracted text, show clear failure; OCR considered later with explicit user consent/cost |
+| Payment webhook processed twice or missed        | High   | Idempotency by event ID, signature verification, retry endpoint, reconciliation job                                                   |
+| Subscription state drift between provider and DB | High   | Provider is authoritative; periodic reconciliation and admin webhook view                                                             |
+| Uploaded files contain malicious content         | High   | Magic-byte checks, size limits, private storage, signed URLs, scanning where available                                                |
+| CSRF/session theft                               | High   | HTTP-only cookies, Secure/SameSite, CSRF tokens, refresh rotation, reuse detection                                                    |
+| Cross-user data leakage                          | High   | `userId` filters on every query, service-level ownership checks, integration tests                                                    |
+| MongoDB schema drift                             | Medium | Schema versioning, Zod validation, migration scripts, staged rollout                                                                  |
+| Large resume/portfolio content degrades UX       | Medium | Section-wise editing, payload limits, autosave debounce, pagination                                                                   |
+| Premium feature gating inconsistent              | Medium | Server-side entitlements are authoritative; UI gating mirrors server response                                                         |
+| Brand palette misused by new components          | Medium | Central Tailwind tokens, lint/review checklist, shared UI components only                                                             |
+| Accessibility regressions                        | Medium | Shared components, automated checks, manual keyboard/screen-reader QA                                                                 |
+| Email delivery failures block verification       | Medium | Provider abstraction, retry queue, resend endpoint, deliverability monitoring                                                         |
+| Scope expansion across 17 modules                | High   | Phase gates, no parallel unstable foundations, approval before implementation                                                         |
 
 ### 13.2 External Dependencies to Decide Before Implementation
 

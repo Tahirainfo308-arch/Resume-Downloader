@@ -18,9 +18,12 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run typecheck && npm run lint && npm run format:check",
-    "verify": "npm run check && npm run build"
+    "verify": "npm run check && npm run build",
+    "test:responsive": "playwright test",
+    "test:responsive:install": "playwright install chromium"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "concurrently": "^9.1.2",

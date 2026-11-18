@@ -1,0 +1,10 @@
+export { DashboardLayout } from '@/components/layout/DashboardLayout';
+export type { DashboardLayoutProps } from '@/components/layout/DashboardLayout';
+export { Footer } from '@/components/layout/Footer';
+export type { FooterLink, FooterProps } from '@/components/layout/Footer';
+export { Navbar } from '@/components/layout/Navbar';
+export type { NavbarProps, NavItem } from '@/components/layout/Navbar';
+export { PageHeader } from '@/components/layout/PageHeader';
+export type { PageHeaderProps } from '@/components/layout/PageHeader';
+export { Sidebar } from '@/components/layout/Sidebar';
+export type { SidebarProps } from '@/components/layout/Sidebar';

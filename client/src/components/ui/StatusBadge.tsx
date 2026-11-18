@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Badge, type BadgeTone } from '@/components/ui/Badge';
 
 type Tone = 'success' | 'warning' | 'error' | 'neutral';
 
@@ -7,19 +8,13 @@ interface StatusBadgeProps {
   children: ReactNode;
 }
 
-const toneClasses: Record<Tone, string> = {
-  success: 'bg-beige text-burgundy',
-  warning: 'bg-rose/10 text-rose',
-  error: 'bg-rose text-cream',
-  neutral: 'bg-beige/60 text-dark',
+const toneMap: Record<Tone, BadgeTone> = {
+  success: 'success',
+  warning: 'warning',
+  error: 'danger',
+  neutral: 'neutral',
 };
 
 export function StatusBadge({ tone, children }: StatusBadgeProps) {
-  return (
-    <span
-      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${toneClasses[tone]}`}
-    >
-      {children}
-    </span>
-  );
+  return <Badge tone={toneMap[tone]}>{children}</Badge>;
 }

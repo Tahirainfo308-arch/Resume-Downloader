@@ -9,13 +9,8 @@
     min-width: 320px;
     background-color: var(--color-cream);
     color: var(--color-dark);
-    font-family:
-      ui-sans-serif,
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      sans-serif;
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
   }
 
   body {
@@ -23,14 +18,93 @@
     min-height: 100vh;
     background-color: var(--color-cream);
     color: var(--color-dark);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
   }
 
   * {
     border-color: var(--color-beige);
   }
 
+  ::selection {
+    background-color: var(--color-burgundy-soft);
+    color: var(--color-dark);
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-burgundy);
     outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .ds-skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-beige);
+  }
+
+  .ds-skeleton::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg, transparent, var(--color-beige-weak), transparent);
+    animation: ds-shimmer 1.6s infinite;
+  }
+
+  .ds-toast-enter {
+    animation: ds-toast-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ds-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-beige) transparent;
+  }
+}
+
+@keyframes ds-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes ds-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

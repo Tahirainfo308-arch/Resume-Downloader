@@ -131,3 +131,4 @@ All API routes are prefixed with `/api/v1`.
 - `AGENTS.md` — permanent rules for development assistants
 - `docs/architecture.md` — current architecture summary
 - `docs/setup.md` — setup and troubleshooting notes
+- `docs/design-system.md` — reusable UI components and layout system

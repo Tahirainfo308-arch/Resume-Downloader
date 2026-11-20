@@ -5,6 +5,8 @@ import { logger } from './config/logger';
 
 const app = createApp();
 
+export default app;
+
 const server = app.listen(env.PORT, () => {
   logger.info({ port: env.PORT, apiPrefix: env.API_PREFIX }, 'API server started');
 });
